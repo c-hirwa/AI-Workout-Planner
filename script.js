@@ -1,3 +1,39 @@
+if (!window.fetch) {
+    // Simple fetch polyfill
+    window.fetch = function(url, options) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open(options.method || 'GET', url, true);
+            
+            // Set headers
+            if (options.headers) {
+                Object.keys(options.headers).forEach(key => {
+                    xhr.setRequestHeader(key, options.headers[key]);
+                });
+            }
+
+            xhr.onload = function() {
+                resolve({
+                    ok: xhr.status >= 200 && xhr.status < 300,
+                    status: xhr.status,
+                    json: () => Promise.resolve(JSON.parse(xhr.responseText))
+                });
+            };
+
+            xhr.onerror = function() {
+                reject(new Error('Network error'));
+            };
+
+            // Send the request
+            if (options.body) {
+                xhr.send(JSON.stringify(options.body));
+            } else {
+                xhr.send();
+            }
+        });
+    };
+}
+
 document.getElementById('searchButton').addEventListener('click', async function() {
     const muscle = document.getElementById('muscle').value;
     const difficulty = document.getElementById('difficulty').value;
