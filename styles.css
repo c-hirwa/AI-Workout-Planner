@@ -1,37 +1,162 @@
+:root {
+    --dark-bg: #121212;
+    --dark-card: #1E1E1E;
+    --accent-green: #00FF87;
+    --text-primary: #E0E0E0;
+    --text-secondary: #A0A0A0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
+    font-family: 'Orbitron', Arial, sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
-}
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-form {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    background: 
+        radial-gradient(circle at 3% 25%, rgba(0,255,135,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 97% 75%, rgba(0,255,135,0.1) 0%, transparent 50%);
 }
+
+.form-container {
+    background-color: var(--dark-card);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 
+        0 10px 30px rgba(0,255,135,0.1),
+        0 0 20px rgba(0,255,135,0.05);
+    width: 100%;
+    max-width: 500px;
+    border: 2px solid rgba(0,255,135,0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.form-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        transparent 0,
+        rgba(0,255,135,0.03) 5px,
+        transparent 10px
+    );
+    animation: backgroundMove 10s linear infinite;
+    z-index: 1;
+}
+
+@keyframes backgroundMove {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+h1 {
+    text-align: center;
+    color: var(--accent-green);
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px rgba(0,255,135,0.5);
+    letter-spacing: 2px;
+}
+
 label {
-    margin: 10px 0 5px;
+    display: block;
+    margin: 15px 0 10px;
+    color: var(--text-secondary);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
 }
-input, select, button {
+
+select, input[type="checkbox"] {
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    border: 2px solid rgba(0,255,135,0.3);
+    transition: all 0.3s ease;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
     margin-bottom: 15px;
-    padding: 8px;
-    width: 80%;
+    border-radius: 8px;
 }
-button {
-    background: #007bff;
-    color: #fff;
-    border: none;
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
     cursor: pointer;
+    position: relative;
 }
+
+input[type="checkbox"]:checked {
+    background-color: var(--accent-green);
+    border-color: var(--accent-green);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✔';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--dark-bg);
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(45deg, #00FF87, #00A86B);
+    color: var(--dark-bg);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,255,135,0.4);
+}
+
 button:hover {
-    background: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(0,255,135,0.6);
+}
+
+#responseContainer {
+    margin-top: 20px;
+    background-color: rgba(0,255,135,0.05);
+    border: 2px solid rgba(0,255,135,0.2);
+    padding: 20px;
+    border-radius: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#responseText {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Scrollbar Styling */
+#responseContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+#responseContainer::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+}
+
+#responseContainer::-webkit-scrollbar-thumb {
+    background: var(--accent-green);
+    border-radius: 4px;
 }
