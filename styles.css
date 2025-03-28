@@ -1,95 +1,148 @@
 :root {
     --dark-bg: #121212;
     --dark-card: #1E1E1E;
-    --accent-green: #00FF87;
+    --accent-blue: #00A8FF;
     --text-primary: #E0E0E0;
     --text-secondary: #A0A0A0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: 'Orbitron', Arial, sans-serif;
     background-color: var(--dark-bg);
     color: var(--text-primary);
-    margin: 0;
-    padding: 0;
+    line-height: 1.6;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background: 
-        radial-gradient(circle at 3% 25%, rgba(0,255,135,0.1) 0%, transparent 50%),
-        radial-gradient(circle at 97% 75%, rgba(0,255,135,0.1) 0%, transparent 50%);
+        radial-gradient(circle at 3% 25%, rgba(0,168,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 97% 75%, rgba(0,168,255,0.1) 0%, transparent 50%);
 }
 
-.form-container {
+.container {
     background-color: var(--dark-card);
-    padding: 40px;
     border-radius: 15px;
     box-shadow: 
-        0 10px 30px rgba(0,255,135,0.1),
-        0 0 20px rgba(0,255,135,0.05);
+        0 10px 30px rgba(0,168,255,0.1),
+        0 0 20px rgba(0,168,255,0.05);
     width: 100%;
-    max-width: 500px;
-    border: 2px solid rgba(0,255,135,0.2);
+    max-width: 800px;
+    padding: 40px;
+    border: 2px solid rgba(0,168,255,0.2);
+    position: relative;
+    overflow: hidden;
 }
 
 h1 {
     text-align: center;
-    color: var(--accent-green);
+    color: var(--accent-blue);
     font-size: 2.5em;
     margin-bottom: 30px;
-    text-shadow: 0 0 10px rgba(0,255,135,0.5);
+    text-shadow: 0 0 10px rgba(0,168,255,0.5);
     letter-spacing: 2px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
     margin-bottom: 10px;
     color: var(--text-secondary);
-    font-weight: bold;
     text-transform: uppercase;
+    font-size: 0.9em;
 }
 
-select, input[type="checkbox"], button {
+select {
+    width: 100%;
+    padding: 12px;
     background-color: var(--dark-bg);
     color: var(--text-primary);
-    border: 2px solid rgba(0,255,135,0.3);
-    padding: 12px;
+    border: 2px solid rgba(0,168,255,0.3);
     border-radius: 8px;
-    width: 100%;
-    margin-bottom: 15px;
+    appearance: none;
 }
 
 button {
-    background: linear-gradient(45deg, #00FF87, #00A86B);
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(45deg, #00A8FF, #0077CC);
     color: var(--dark-bg);
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
     text-transform: uppercase;
-    box-shadow: 0 5px 15px rgba(0,255,135,0.4);
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,168,255,0.4);
 }
 
 button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 7px 20px rgba(0,255,135,0.6);
+    box-shadow: 0 7px 20px rgba(0,168,255,0.6);
 }
 
-#responseContainer {
-    margin-top: 20px;
-    background-color: rgba(0,255,135,0.05);
-    border: 2px solid rgba(0,255,135,0.2);
-    padding: 20px;
-    border-radius: 10px;
-    max-height: 300px;
+#exercisesContainer {
+    margin-top: 30px;
+    max-height: 500px;
     overflow-y: auto;
+    background-color: rgba(0,168,255,0.05);
+    border: 2px solid rgba(0,168,255,0.2);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.exercise-card {
+    background-color: var(--dark-bg);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(0,168,255,0.2);
+    transition: transform 0.3s ease;
+}
+
+.exercise-card:hover {
+    transform: scale(1.02);
+}
+
+.exercise-name {
+    color: var(--accent-blue);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.exercise-details {
+    color: var(--text-secondary);
 }
 
 /* Scrollbar Styling */
-#responseContainer::-webkit-scrollbar {
+#exercisesContainer::-webkit-scrollbar {
     width: 8px;
 }
 
-#responseContainer::-webkit-scrollbar-thumb {
-    background: var(--accent-green);
+#exercisesContainer::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+}
+
+#exercisesContainer::-webkit-scrollbar-thumb {
+    background: var(--accent-blue);
     border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 }
