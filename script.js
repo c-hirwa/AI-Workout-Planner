@@ -1,35 +1,41 @@
-document.getElementById('workoutForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
+document.getElementById('searchButton').addEventListener('click', async function() {
+    const muscle = document.getElementById('muscle').value;
+    const difficulty = document.getElementById('difficulty').value;
+    const equipment = document.getElementById('equipment').value;
+    const exercisesContainer = document.getElementById('exercisesContainer');
 
-    const goal = document.getElementById('goal').value;
-    const fitnessLevel = document.getElementById('fitnessLevel').value;
-    
-    // Collect selected preferences
-    const preferenceCheckboxes = document.querySelectorAll('input[name="preferences"]:checked');
-    const preferences = Array.from(preferenceCheckboxes).map(cb => cb.value);
+    // Clear previous results
+    exercisesContainer.innerHTML = '<p>Searching for exercises...</p>';
 
-    const responseText = document.getElementById('responseText');
+    try {
+        const response = await fetch('/api/find-exercises', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ muscle, difficulty, equipment })
+        });
 
-    if (goal && fitnessLevel && preferences.length > 0) {
-        try {
-            const result = await fetch('/api/generate-workout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ goal, fitnessLevel, preferences })
-            });
+        const data = await response.json();
 
-            const response = await result.json();
+        if (data.exercises && data.exercises.length > 0) {
+            // Generate exercise cards
+            const exercisesHTML = data.exercises.map(exercise => `
+                <div class="exercise-card">
+                    <div class="exercise-name">${exercise.name}</div>
+                    <div class="exercise-details">
+                        <p><strong>Muscle:</strong> ${exercise.muscle}</p>
+                        <p><strong>Equipment:</strong> ${exercise.equipment}</p>
+                        <p><strong>Difficulty:</strong> ${exercise.difficulty}</p>
+                        <p><strong>Instructions:</strong> ${exercise.instructions}</p>
+                    </div>
+                </div>
+            `).join('');
 
-            if (response && response.workoutPlan) {
-                responseText.textContent = response.workoutPlan;
-            } else {
-                responseText.textContent = "Sorry, could not generate a workout plan.";
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            responseText.textContent = "An error occurred while generating the workout plan.";
+            exercisesContainer.innerHTML = exercisesHTML;
+        } else {
+            exercisesContainer.innerHTML = '<p>No exercises found matching your criteria.</p>';
         }
-    } else {
-        responseText.textContent = "Please select a goal, fitness level, and at least one workout preference.";
+    } catch (error) {
+        console.error('Error:', error);
+        exercisesContainer.innerHTML = `<p>An error occurred: ${error.message}</p>`;
     }
 });
