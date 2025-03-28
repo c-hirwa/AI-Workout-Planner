@@ -8,103 +8,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>AI Workout Planner</h1>
-            <p>Generate personalized workout plans tailored to your fitness goals</p>
-        </header>
+    <div class="form-container">
+        <h1>AI Workout Planner</h1>
+        <form id="workoutForm">
+            <label for="goal">Fitness Goal:</label>
+            <select id="goal" name="goal" required>
+                <option value="">Select Goal</option>
+                <option value="Build muscle">Build Muscle</option>
+                <option value="Lose weight">Lose Weight</option>
+                <option value="Improve endurance">Improve Endurance</option>
+                <option value="Tone body">Tone Body</option>
+            </select>
 
-        <section class="dashboard">
-            <div class="card fitness-stats">
-                <h2>Fitness Progress</h2>
-                <div class="progress-container">
-                    <div class="progress-item">
-                        <span>Workouts Completed</span>
-                        <span id="workoutsCompletedCount">0</span>
-                    </div>
-                    <div class="progress-item">
-                        <span>Total Workout Time</span>
-                        <span id="totalWorkoutTime">0 mins</span>
-                    </div>
-                </div>
+            <label for="fitnessLevel">Fitness Level:</label>
+            <select id="fitnessLevel" name="fitnessLevel" required>
+                <option value="">Select Fitness Level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+
+            <label>Workout Preferences (select multiple):</label>
+            <div>
+                <input type="checkbox" id="weightTraining" name="preferences" value="Weight training">
+                <label for="weightTraining">Weight Training</label>
+                <input type="checkbox" id="cardio" name="preferences" value="Cardio">
+                <label for="cardio">Cardio</label>
+                <input type="checkbox" id="yoga" name="preferences" value="Yoga">
+                <label for="yoga">Yoga</label>
             </div>
 
-            <div class="card workout-goals">
-                <h2>Fitness Goals</h2>
-                <div class="goal-container">
-                    <div class="goal-bar">
-                        <div class="progress" id="goalProgress"></div>
-                    </div>
-                    <div class="goal-text">
-                        <span id="goalPercentage">0%</span> of <span id="goalTarget">Goal</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+            <button type="submit">Generate Workout Plan</button>
+        </form>
 
-        <section class="workout-section">
-            <div class="card workout-history">
-                <h2>Workout History</h2>
-                <div class="controls">
-                    <input type="text" id="searchWorkouts" placeholder="Search workouts...">
-                    <select id="sortWorkouts">
-                        <option value="date">Sort by Date</option>
-                        <option value="duration">Sort by Duration</option>
-                        <option value="difficulty">Sort by Difficulty</option>
-                    </select>
-                </div>
-                <div class="workouts-list" id="workoutsList">
-                    <!-- Workouts will be populated here -->
-                </div>
-                <button class="btn" id="generateWorkoutBtn">Generate Workout</button>
-            </div>
-
-            <div class="card workout-analytics">
-                <h2>Workout Analytics</h2>
-                <canvas id="workoutChart"></canvas>
-                <div class="filters">
-                    <select id="chartType">
-                        <option value="bar">Workout Intensity</option>
-                        <option value="pie">Workout Types</option>
-                        <option value="line">Progress Over Time</option>
-                    </select>
-                </div>
-            </div>
-        </section>
-
-        <section class="workout-generation">
-            <div class="card">
-                <h2>Customize Workout Plan</h2>
-                <div class="workout-form">
-                    <select id="fitnessGoal">
-                        <option value="weightLoss">Weight Loss</option>
-                        <option value="muscleGain">Muscle Gain</option>
-                        <option value="endurance">Endurance</option>
-                        <option value="flexibility">Flexibility</option>
-                    </select>
-                    <select id="fitnessLevel">
-                        <option value="beginner">Beginner</option>
-                        <option value="intermediate">Intermediate</option>
-                        <option value="advanced">Advanced</option>
-                    </select>
-                    <input type="number" id="weeklyGoal" placeholder="Weekly Workout Goal (mins)">
-                    <button class="btn" id="setGoalBtn">Set Goal</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Workout Details Modal -->
-        <div id="workoutDetailsModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2 id="workoutDetailsTitle">Workout Details</h2>
-                <div id="workoutDetailsContent"></div>
-                <div class="actions">
-                    <button class="btn" id="completeWorkoutBtn">Mark as Completed</button>
-                </div>
-            </div>
+        <div id="responseContainer">
+            <p id="responseText">Your personalized workout plan will appear here...</p>
         </div>
     </div>
-    <script src="app.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
