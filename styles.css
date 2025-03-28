@@ -31,29 +31,6 @@ body {
     width: 100%;
     max-width: 500px;
     border: 2px solid rgba(0,255,135,0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.form-container::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: repeating-linear-gradient(
-        transparent 0,
-        rgba(0,255,135,0.03) 5px,
-        transparent 10px
-    );
-    animation: backgroundMove 10s linear infinite;
-    z-index: 1;
-}
-
-@keyframes backgroundMove {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 h1 {
@@ -67,63 +44,28 @@ h1 {
 
 label {
     display: block;
-    margin: 15px 0 10px;
+    margin-bottom: 10px;
     color: var(--text-secondary);
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 0.9em;
 }
 
-select, input[type="checkbox"] {
+select, input[type="checkbox"], button {
     background-color: var(--dark-bg);
     color: var(--text-primary);
     border: 2px solid rgba(0,255,135,0.3);
-    transition: all 0.3s ease;
-}
-
-select {
-    width: 100%;
     padding: 12px;
-    margin-bottom: 15px;
     border-radius: 8px;
-}
-
-input[type="checkbox"] {
-    margin-right: 10px;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-}
-
-input[type="checkbox"]:checked {
-    background-color: var(--accent-green);
-    border-color: var(--accent-green);
-}
-
-input[type="checkbox"]:checked::after {
-    content: '✔';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--dark-bg);
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 button {
-    width: 100%;
-    padding: 15px;
     background: linear-gradient(45deg, #00FF87, #00A86B);
     color: var(--dark-bg);
-    border: none;
-    border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: all 0.3s ease;
     box-shadow: 0 5px 15px rgba(0,255,135,0.4);
 }
 
@@ -142,18 +84,9 @@ button:hover {
     overflow-y: auto;
 }
 
-#responseText {
-    color: var(--text-secondary);
-    line-height: 1.6;
-}
-
 /* Scrollbar Styling */
 #responseContainer::-webkit-scrollbar {
     width: 8px;
-}
-
-#responseContainer::-webkit-scrollbar-track {
-    background: var(--dark-bg);
 }
 
 #responseContainer::-webkit-scrollbar-thumb {
