@@ -1,53 +1,60 @@
-const express = require('express');
-const cors = require('cors');
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+document.addEventListener('DOMContentLoaded', () => {
+    const fitnessAPI = new FitnessAPI();
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+    const muscleForm = document.getElementById('muscle-form');
+    const workoutPlanSection = document.getElementById('workout-plan');
+    const planDetailsSection = document.getElementById('plan-details');
 
-// Middleware
-app.use(cors());
-app.use(express.static('public'));
-app.use(express.json());
-
-const RAPIDAPI_KEY = '4de4cb1a14msh060fb733ee5072cp1dc4d6jsnc5edd28bfe35';
-
-app.post('/api/find-exercises', async (req, res) => {
-    const { muscle, difficulty, equipment } = req.body;
-
-    // Construct query parameters
-    const params = new URLSearchParams();
-    if (muscle) params.append('muscle', muscle);
-    if (difficulty) params.append('difficulty', difficulty);
-    if (equipment) params.append('equipment', equipment);
-
-    const url = `https://exercises-by-api-ninjas.p.rapidapi.com/v1/exercises?${params.toString()}`;
-
-    const options = {
-        method: 'GET',
-        headers: {
-            'x-rapidapi-key': RAPIDAPI_KEY,
-            'x-rapidapi-host': 'exercises-by-api-ninjas.p.rapidapi.com'
-        }
-    };
-
-    try {
-        const response = await fetch(url, options);
-        
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('API Error:', errorText);
-            return res.status(response.status).json({ error: errorText });
-        }
-
-        const exercises = await response.json();
-        res.json({ exercises });
-    } catch (error) {
-        console.error('Detailed Error:', error);
-        res.status(500).json({ error: 'Failed to fetch exercises', details: error.message });
+    // Utility function to truncate instructions
+    function truncateInstructions(instructions, maxLength = 150) {
+        return instructions.length > maxLength 
+            ? instructions.substring(0, maxLength) + '...' 
+            : instructions;
     }
-});
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    muscleForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Get selected muscle group and difficulty
+        const muscleGroup = document.getElementById('muscle-group').value;
+        const difficultyLevel = document.getElementById('difficulty-level').value || null;
+
+        try {
+            // Fetch exercises based on muscle group and optional difficulty
+            const exercises = await fitnessAPI.getExercises(muscleGroup, difficultyLevel);
+            
+            // Clear previous workout plan
+            planDetailsSection.innerHTML = '';
+
+            // If no exercises found
+            if (exercises.length === 0) {
+                planDetailsSection.innerHTML = `
+                    <p>No exercises found for ${muscleGroup} ${difficultyLevel ? `at ${difficultyLevel} level` : ''}</p>
+                `;
+                return;
+            }
+
+            // Generate workout plan HTML
+            const workoutHTML = `
+                <h3>${muscleGroup.toUpperCase()} Workout Plan</h3>
+                ${exercises.map((exercise, index) => `
+                    <div class="exercise-card">
+                        <h4>${index + 1}. ${exercise.name}</h4>
+                        <p><strong>Type:</strong> ${exercise.type}</p>
+                        <p><strong>Equipment:</strong> ${exercise.equipment}</p>
+                        <p><strong>Difficulty:</strong> ${exercise.difficulty}</p>
+                        <p><strong>Instructions:</strong> ${truncateInstructions(exercise.instructions)}</p>
+                    </div>
+                `).join('')}
+            `;
+
+            // Display workout plan
+            planDetailsSection.innerHTML = workoutHTML;
+            workoutPlanSection.classList.remove('hidden');
+
+        } catch (error) {
+            console.error('Error generating workout:', error);
+            planDetailsSection.innerHTML = `<p>Error generating workout. Please try again.</p>`;
+        }
+    });
 });
