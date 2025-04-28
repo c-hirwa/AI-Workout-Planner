@@ -2,6 +2,7 @@
 
 ## Project Overview
 A web application that generates personalized workout plans based on selected muscle groups using the Exercises API.
+http://chrishirwa.tech/
 
 ## Features
 - Select target muscle group
@@ -18,6 +19,9 @@ A web application that generates personalized workout plans based on selected mu
 - HTML5
 - CSS3
 - JavaScript
+- Node.js
+- Docker
+- Nginx
 - Exercises API by API Ninjas
 
 ## Setup and Installation
