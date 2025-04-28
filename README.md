@@ -33,7 +33,7 @@ The project is deployed across two web servers, `web01` and `web02`, managed beh
 ### Setup Steps
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/ai-workout-planner.git
+git clone https://github.com/c-hirwa/AI-Workout-Planner
 cd ai-workout-planner
 ```
 
@@ -51,38 +51,48 @@ docker run -d -p 3000:3000 --env-file .env ai-workout-planner
 
 4. Access the app locally at:
 ```
-http://localhost:3000
+http://127.0.0.1:3000/index.html
 ```
 
 ---
 
-## Deployment
+Deployment
+1. Running the App on Web Servers (web01 and web02)
+SSH into both servers.
 
-### 1. Building and Running Docker Containers
-On both `web01` and `web02` servers:
-```bash
+Run the following commands:
+
+bash
+Copy
+Edit
 git clone https://github.com/your-username/ai-workout-planner.git
 cd ai-workout-planner
-docker build -t ai-workout-planner .
-docker run -d -p 3000:3000 --env-file .env ai-workout-planner
-```
+docker build -t workout-planner .
+docker run -d -p 3000:3000 --env-file .env workout-planner
+This will start the app inside a Docker container on port 3000.
 
-### 2. Setting up the Load Balancer (`LB01`)
-On the load balancer server (`lb01`):
-1. Install Nginx:
-```bash
+2. Setting up the Load Balancer (lb01)
+SSH into the load balancer server.
+
+Install Nginx if it’s not installed:
+
+bash
+Copy
+Edit
 sudo apt update
 sudo apt install nginx
-```
+Edit the default Nginx config:
 
-2. Configure Nginx to proxy requests to web01 and web02:
-```bash
+bash
+Copy
+Edit
 sudo nano /etc/nginx/sites-available/default
-```
+Add this (replace with your servers’ IPs):
 
-Paste the following configuration:
-```nginx
-upstream workout_app {
+nginx
+Copy
+Edit
+upstream workout_backend {
     server web01_private_ip:3000;
     server web02_private_ip:3000;
 }
@@ -91,30 +101,30 @@ server {
     listen 80;
 
     location / {
-        proxy_pass http://workout_app;
+        proxy_pass http://workout_backend;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
 }
-```
+Save and restart Nginx:
 
-3. Restart Nginx:
-```bash
+bash
+Copy
+Edit
 sudo systemctl restart nginx
-```
+Allow HTTP traffic if needed:
 
-4. Allow HTTP traffic if firewall is enabled:
-```bash
+bash
+Copy
+Edit
 sudo ufw allow 'Nginx Full'
 sudo ufw enable
-```
+Testing the Deployment
+Open the load balancer’s public IP in a browser.
 
----
+Refresh a few times — traffic should be shared between web01 and web02.
 
-## Verifying the Deployment
-- Access the application using the load balancer's public IP address.
-- Refresh multiple times or simulate multiple users to confirm traffic is being distributed between `web01` and `web02`.
-- Check logs on each server to ensure they are receiving requests.
+You can also check logs on each server to see incoming requests.
 
 ---
 
@@ -137,14 +147,13 @@ sudo ufw enable
 
 ---
 
-## Credits
-- API: [API Ninjas](https://api-ninjas.com/)
-- UI Design: Inspired by minimal and clean web fitness apps.
+## Demo Video
+- http://loom.com/share/ea77fb2186114071bd913e29624c0d1e
 
 ---
 
-## License
-MIT License
+## Credits
+- API: [API Ninjas](https://api-ninjas.com/)
 
 ---
 
