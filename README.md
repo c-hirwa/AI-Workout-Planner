@@ -81,23 +81,6 @@ sudo apt install nginx
 ```bash
 sudo nano /etc/nginx/sites-available/default
 ```
-- Add this (replace with your servers’ IPs):
-```nginx
-upstream workout_backend {
-    server web01_private_ip:3000;
-    server web02_private_ip:3000;
-}
-
-server {
-    listen 80;
-
-    location / {
-        proxy_pass http://workout_backend;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-}
-```
 - Save and restart Nginx:
 ```bash
 sudo systemctl restart nginx
