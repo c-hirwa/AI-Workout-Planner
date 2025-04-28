@@ -1,7 +1,9 @@
+import config from './config.js';
+
 class FitnessAPI {
     constructor() {
         this.exercisesApiUrl = 'https://api.api-ninjas.com/v1/exercises';
-        this.apiKey = 'Uvqa5i7ZXQdqTp0dNzy71A==VTi8SWKa95JwvOLe'; // API key provided in example
+        this.apiKey = config.API_KEY;
     }
 
     async getExercises(muscle, difficulty = null) {
