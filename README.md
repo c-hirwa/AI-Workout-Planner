@@ -28,38 +28,32 @@ Web App: http://chrishirwa.tech/
 ## Getting Started Locally
 
 ### Prerequisites
-- Docker installed on your machine
+- Docker installed
 - API key from [API Ninjas](https://api-ninjas.com/)
 
-### Setup Steps
+### Setup
+
 1. Clone the repository:
 ```bash
-git clone https://github.com/c-hirwa/AI-Workout-Planner
+git clone https://github.com/c-hirwa/AI-Workout-Planner.git
 cd ai-workout-planner
 ```
 
-2. Set up your environment:
-   - Create a `.env` file:
+2. Create a `.env` file in the project folder with your API key:
 ```
 API_NINJAS_KEY=your_actual_api_key_here
 ```
 
-3. Build and run locally with Docker:
+3. Build and run the Docker container:
 ```bash
 docker build -t ai-workout-planner .
 docker run -d -p 3000:3000 --env-file .env ai-workout-planner
 ```
 
-4. Access the app locally at:
+4. Open your browser and go to:
 ```
 http://127.0.0.1:3000/index.html
 ```
-
----
-
-Perfect — you want it **slightly** more descriptive but still **quick and clean**.  
-Here’s the *better balanced* version of the Deployment section:
-
 ---
 
 ## Deployment
