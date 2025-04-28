@@ -5,7 +5,7 @@
 AI Workout Planner is a lightweight fitness web app that allows users to generate personalized workouts by choosing a muscle group. The app fetches exercises from an external API securely and presents them in an easy-to-use format.
 
 The project is deployed across two web servers, `web01` and `web02`, managed behind a load balancer to distribute incoming traffic and ensure high availability.
-
+Web App: 
 ## Features
 - Generate workouts based on selected muscle groups
 - Optional difficulty filter (Beginner, Intermediate, Advanced)
