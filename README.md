@@ -57,42 +57,32 @@ http://127.0.0.1:3000/index.html
 
 ---
 
-Deployment
-1. Running the App on Web Servers (web01 and web02)
-SSH into both servers.
+## Deployment
 
-Run the following commands:
-
-bash
-Copy
-Edit
+### 1. Running the App on Web Servers (`web01` and `web02`)
+- SSH into both servers.
+- Run the following commands:
+```bash
 git clone https://github.com/your-username/ai-workout-planner.git
 cd ai-workout-planner
 docker build -t workout-planner .
 docker run -d -p 3000:3000 --env-file .env workout-planner
-This will start the app inside a Docker container on port 3000.
+```
+- This will start the app inside a Docker container on port 3000.
 
-2. Setting up the Load Balancer (lb01)
-SSH into the load balancer server.
-
-Install Nginx if it’s not installed:
-
-bash
-Copy
-Edit
+### 2. Setting up the Load Balancer (`lb01`)
+- SSH into the load balancer server.
+- Install Nginx if it’s not installed:
+```bash
 sudo apt update
 sudo apt install nginx
-Edit the default Nginx config:
-
-bash
-Copy
-Edit
+```
+- Edit the default Nginx config:
+```bash
 sudo nano /etc/nginx/sites-available/default
-Add this (replace with your servers’ IPs):
-
-nginx
-Copy
-Edit
+```
+- Add this (replace with your servers’ IPs):
+```nginx
 upstream workout_backend {
     server web01_private_ip:3000;
     server web02_private_ip:3000;
@@ -107,25 +97,24 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
     }
 }
-Save and restart Nginx:
-
-bash
-Copy
-Edit
+```
+- Save and restart Nginx:
+```bash
 sudo systemctl restart nginx
-Allow HTTP traffic if needed:
+```
 
-bash
-Copy
-Edit
+- Allow HTTP traffic if needed:
+```bash
 sudo ufw allow 'Nginx Full'
 sudo ufw enable
-Testing the Deployment
-Open the load balancer’s public IP in a browser.
+```
 
-Refresh a few times — traffic should be shared between web01 and web02.
+---
 
-You can also check logs on each server to see incoming requests.
+## Testing the Deployment
+- Open the load balancer’s public IP in a browser.
+- Refresh a few times — traffic should be shared between `web01` and `web02`.
+- You can also check logs on each server to see incoming requests.
 
 ---
 
