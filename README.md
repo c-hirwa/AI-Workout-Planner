@@ -1,100 +1,152 @@
 # AI Workout Planner
 
-## Project Overview
-A web application that generates personalized workout plans based on selected muscle groups using the Exercises API.
-http://chrishirwa.tech/
+## Overview
+
+AI Workout Planner is a lightweight fitness web app that allows users to generate personalized workouts by choosing a muscle group. The app fetches exercises from an external API securely and presents them in an easy-to-use format.
+
+The project is deployed across two web servers, `web01` and `web02`, managed behind a load balancer to distribute incoming traffic and ensure high availability.
 
 ## Features
-- Select target muscle group
-- Optional difficulty level filtering
-- Fetch up to 5 exercises for the selected muscle group
-- Dark-themed, responsive design
+- Generate workouts based on selected muscle groups
+- Optional difficulty filter (Beginner, Intermediate, Advanced)
+- View instructions and estimated calorie burn for each exercise
+- Responsive design for both desktop and mobile
+- Error handling for API and server issues
 
-## Prerequisites
-- Web browser
-- Internet connection
-- API Ninjas API key
+---
 
-## Technology Stack
-- HTML5
-- CSS3
-- JavaScript
+## Tech Stack
+- HTML, CSS, JavaScript
 - Node.js
 - Docker
-- Nginx
-- Exercises API by API Ninjas
+- Nginx (Load Balancer)
+- External API: API Ninjas Exercises API
 
-## Setup and Installation
+---
 
-### Local Development
+## Getting Started Locally
+
+### Prerequisites
+- Docker installed on your machine
+- API key from [API Ninjas](https://api-ninjas.com/)
+
+### Setup Steps
 1. Clone the repository:
 ```bash
-git clone https://github.com/c-hirwa/AI-Workout-Planner
-cd AI-Workout-Planner
+git clone https://github.com/your-username/ai-workout-planner.git
+cd ai-workout-planner
 ```
 
-2. API Key Configuration
-- Sign up at [API Ninjas](https://api-ninjas.com/)
-- Replace the API key in `api.js`:
-```javascript
-this.apiKey = 'YOUR_API_NINJAS_KEY';
+2. Set up your environment:
+   - Create a `.env` file:
+```
+API_NINJAS_KEY=your_actual_api_key_here
 ```
 
-3. Open `index.html` in your web browser
+3. Build and run locally with Docker:
+```bash
+docker build -t ai-workout-planner .
+docker run -d -p 3000:3000 --env-file .env ai-workout-planner
+```
+
+4. Access the app locally at:
+```
+http://localhost:3000
+```
+
+---
+
+## Deployment
+
+### 1. Building and Running Docker Containers
+On both `web01` and `web02` servers:
+```bash
+git clone https://github.com/your-username/ai-workout-planner.git
+cd ai-workout-planner
+docker build -t ai-workout-planner .
+docker run -d -p 3000:3000 --env-file .env ai-workout-planner
+```
+
+### 2. Setting up the Load Balancer (`LB01`)
+On the load balancer server (`lb01`):
+1. Install Nginx:
+```bash
+sudo apt update
+sudo apt install nginx
+```
+
+2. Configure Nginx to proxy requests to web01 and web02:
+```bash
+sudo nano /etc/nginx/sites-available/default
+```
+
+Paste the following configuration:
+```nginx
+upstream workout_app {
+    server web01_private_ip:3000;
+    server web02_private_ip:3000;
+}
+
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://workout_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+3. Restart Nginx:
+```bash
+sudo systemctl restart nginx
+```
+
+4. Allow HTTP traffic if firewall is enabled:
+```bash
+sudo ufw allow 'Nginx Full'
+sudo ufw enable
+```
+
+---
+
+## Verifying the Deployment
+- Access the application using the load balancer's public IP address.
+- Refresh multiple times or simulate multiple users to confirm traffic is being distributed between `web01` and `web02`.
+- Check logs on each server to ensure they are receiving requests.
+
+---
 
 ## API Reference
-- [Exercises API Documentation](https://api-ninjas.com/api/exercises)
-- Available Muscle Groups:
-  - Abdominals
-  - Biceps
-  - Triceps
-  - Chest
-  - Back
-  - Shoulders
-  - Legs
-  - Calves
-  - Forearms
-  - Glutes
-  - Hamstrings
-  - Quadriceps
+- [Exercises API by API Ninjas](https://api-ninjas.com/api/exercises)
 
-## Deployment Considerations
-- Ensure secure API key management
-- Use environment variables in production
-- Implement rate limiting and error handling
+---
 
-## .gitignore Template
-```
-# Dependency directories
-node_modules/
+## Challenges and Lessons Learned
+- Ensured API keys are hidden and not exposed to the frontend (currently improving backend proxy setup).
+- Learned to configure Nginx for load balancing between two Dockerized web servers.
+- Improved error handling in case of API failures or load distribution issues.
 
-# API Keys and Sensitive Data
-.env
-*.key
-
-# Local development files
-.DS_Store
-.vscode/
-```
-
-## Challenges and Solutions
-1. API Key Security
-   - Solution: Implement server-side proxy or use environment variables
-2. Exercise Data Variability
-   - Solution: Implement robust error handling and fallback mechanisms
+---
 
 ## Future Improvements
-- Add exercise filtering options
-- Implement workout progression tracking
-- Create user authentication
-- Develop mobile-responsive design
+- Finalize backend proxy server to secure API calls completely.
+- Add user login to save personal workout histories.
+- Expand difficulty and filtering options for exercises.
+
+---
 
 ## Credits
 - API: [API Ninjas](https://api-ninjas.com/)
-- Design Inspiration: Modern web design principles
+- UI Design: Inspired by minimal and clean web fitness apps.
+
+---
 
 ## License
-[Choose an appropriate license, e.g., MIT]
+MIT License
+
+---
 
 ## Contact
 Chris Hirwa
